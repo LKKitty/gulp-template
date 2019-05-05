@@ -35,6 +35,10 @@ const options = minimist(process.argv.slice(2), knownOptions);
 const clean = () => {
   return del(['dist']);
 };
+// 删除dist目录下的pages
+const cleanPages = () => {
+  return del(['dist/pages/**/*']);
+};
 // 检查端口冲突
 const checkPort = async () => {
   Config.connect.port = await getPort();
@@ -137,6 +141,7 @@ const browserJS = async () => {
 };
 
 const watchFiles = () => {
+  gulp.watch(Config.html.src, cleanPages); //html文件有变化时，清空dist目录下的pages文件再重新生成
   gulp.watch(Config.html.src, htmls);
   gulp.watch(Config.css.src, styles);
   gulp.watch(Config.images.src, images);
